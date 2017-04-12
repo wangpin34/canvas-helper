@@ -1,5 +1,84 @@
 (function(w){
 
+	var defaultFillColor = '#ffffff';
+	var defaultBorderColor = '#000000';
+	var defaultAngle = 0;
+
+
+	function Shape(opts){
+		this.x = opts.x;
+		this.y = opts.y;
+		this.width = opts.width;
+		this.height = opts.height;
+		this.color = opts.color || defaultFillColor;
+		this.angle = opts.angle || defaultAngle;
+		this.borderColor = opts.borderColor || defaultBorderColor;
+	}
+
+	function Rectangle(opts){
+		this.x = opts.x;
+		this.y = opts.y;
+		this.width = opts.width;
+		this.height = opts.height;
+		this.color = opts.color || defaultFillColor;
+		this.angle = opts.angle || defaultAngle;
+		this.borderColor = opts.borderColor || defaultBorderColor;
+
+		var listeners = {};
+
+		if(typeof Rectangle.initalized === 'undefined'){
+			Rectangle.prototype.draw = function(context){
+				if(typeof this.angle !== 'undefined'){
+					context.rotate(this.angle);
+				}
+				context.fillStyle = this.color;
+				context.beginPath();
+				context.rect(this.x, this.y, this.width, this.height);
+				context.fill();
+				context.strokeStyle = this.borderColor;
+				context.stroke();
+				if(typeof this.angle !== 'undefined'){
+					context.rotate(this.angle * -1);
+				}
+			}
+
+			Rectangle.prototype.has = function(coordinate){
+				return false;
+			}
+
+			Rectangle.prototype.setCoordinate = function(x, y){
+				this.x = x;
+				this.y = y;
+			}
+
+			Rectangle.prototype.emit = function(eventType, e){
+				listeners[eventType] && listeners[eventType].forEach(function(func){
+					func(e);
+				})
+			}
+
+			Rectangle.prototype.addEventListener = function(eventType, listener){
+				if(!listeners[eventType]){
+					listeners[eventType] = [];
+				}
+				listeners[eventType].push(listener)
+			}
+
+			Rectangle.prototype.removeEventListener = function(eventType, listener){
+				if(listeners[eventType]){
+					var funcs = listeners[eventType];
+					var index;
+					if((index = funcs.indexOf(listener)) > -1){
+						funcs.splice(index, 1);	
+					}
+				}
+			}
+
+			Rectangle.initalized = true;
+		}
+
+	}
+
 	function Circle(posX, posY, radius, color){
 		this.posX = posX;
 		this.posY = posY;
@@ -103,7 +182,7 @@
 		}
 	}
 
-	window.Helper = Helper;
-	window.Helper.Circle = Circle;
-
+	Helper.Rectangle = Rectangle;
+	Helper.Circle = Circle;
+	w.Helper = Helper;
 })(window)

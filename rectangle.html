@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="application-name" content="canvas helper">
+<meta name="generator" content="wang pin">
+<meta name="description" content="canvas helper">
+<meta name="keywords" content="canvas, helper, javascript">
+<meta name="author" content="wang pin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--HTML4 charset def-->
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<!--HTML5 charset def-->
+<meta charset="UTF-8">
+<link rel="icon" href="/assets/icon.ico" type="image/x-icon">
+<title>canvas helper sample</title>
+<style>
+ body {
+  margin: 0; /* Remove default margin */
+ }
+
+ canvas {
+  border: 1px solid gray;
+ }
+
+</style>
+</head>
+<body>
+
+<canvas id="mycanvas"></canvas>
+
+</body>
+<script type="text/javascript" src="./src/helper.js"></script>
+<script type="text/javascript">
+
+document.addEventListener('DOMContentLoaded', function(){
+  var canvas = document.getElementById('mycanvas');
+  canvas.width = 400;
+  canvas.height = 400;
+  var helper = new Helper(canvas);
+  var rect1 = new Helper.Rectangle({
+    x: 20,
+    y: 20,
+    width: 50,
+    height: 50,
+    color: '#2196F3'
+  });
+
+  var rect2 = new Helper.Rectangle({
+    x: 80,
+    y: 50,
+    width: 90,
+    height: 70,
+    color: '#009688',
+    angle: 20*Math.PI/180
+  });
+
+
+  helper.add(rect1);
+  helper.add(rect2);
+  helper.repaint();
+
+})
+</script>
+</html>
